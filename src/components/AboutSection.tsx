@@ -104,10 +104,9 @@ const AboutSection = () => {
             I’m a Full Stack Web Developer with 4 years of experience building
             modern, scalable, and high-performance applications. Skilled in
             Next.js, React, and Node.js, I specialize in delivering seamless
-            user experiences across the entire development cycle. With a strong
-            foundation in cloud solutions (AWS), automated testing, and clean
-            code practices, I thrive on turning complex challenges into
-            efficient, innovative software solutions.
+            user experiences across the entire development cycle. I thrive on
+            turning complex challenges into efficient, innovative software
+            solutions.
           </motion.p>
         </motion.div>
 
