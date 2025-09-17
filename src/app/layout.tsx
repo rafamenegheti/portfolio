@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Portfolio - Rafael Menegheti",
   description:
-    "Modern, elegant personal portfolio showcasing full-stack development projects and skills.",
+    "Personal portfolio showcasing full-stack development projects and skills.",
 };
 
 export default function RootLayout({
