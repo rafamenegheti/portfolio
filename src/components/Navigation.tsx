@@ -61,7 +61,7 @@ const Navigation = () => {
             className="flex-shrink-0"
           >
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Rafael Menegheti
+              Rafael
             </h1>
           </motion.div>
 
