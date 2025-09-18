@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import TextReveal from "@/components/TextReveal";
 import { Calendar, MapPin, Briefcase } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Experience {
   id: string;
@@ -18,14 +19,16 @@ interface Experience {
 }
 
 const ExperienceSection = () => {
+  const { t, tArray } = useLanguage();
+
   const experiences: Experience[] = [
     {
       id: "1",
       company: "Sync-OS",
-      position: "Full Stack Developer",
+      position: t("experience.job1.position"),
       location: "Remote",
       startDate: "Jan 2023",
-      endDate: "Present",
+      endDate: t("experience.present"),
       description: "",
       technologies: [
         "Next.js",
@@ -38,18 +41,12 @@ const ExperienceSection = () => {
         "Vitest",
         "MongoDB",
       ],
-      achievements: [
-        "Developed a meteorological analysis and monitoring platform.",
-        "Implemented interactive dashboards with real-time data visualization, allowing users to track weather metrics and forecasts intuitively.",
-        "Led the integration of external APIs for climate data collection, ensuring reliability and scalability in processing large volumes of information.",
-        "Performed backend performance optimizations, reducing response time by up to 40% in critical queries.",
-        "Collaborated in defining the application architecture, applying Clean Code best practices, SOLID principles, and scalable architecture principles.",
-      ],
+      achievements: tArray("experience.job1.achievements"),
     },
     {
       id: "2",
       company: "Grupo Voitto",
-      position: "Junior Full Stack Developer",
+      position: t("experience.job2.position"),
       location: "Remote",
       startDate: "Mar 2021",
       endDate: "Jan 2024",
@@ -66,27 +63,18 @@ const ExperienceSection = () => {
         "MySQL",
         "Jest",
       ],
-      achievements: [
-        "Developed a video course consumption platform.",
-        "Performed maintenance and implemented improvements across all company platforms, including websites, blogs, and the LMS platform. This involved bug fixes, performance optimization, and implementation of new features, enhancing user experience and ensuring smooth platform operation.",
-        "Created a B2B course license sales and management platform.",
-        "Created various campaign pages, such as landing pages and referral programs, that attracted thousands of users, ensuring attractive design and intuitive navigation.",
-      ],
+      achievements: tArray("experience.job2.achievements"),
     },
     {
       id: "3",
       company: "Usina de Laticínios Jussara",
-      position: "Systems Support Analyst",
+      position: t("experience.job3.position"),
       location: "Franca, SP",
       startDate: "Jun 2020",
       endDate: "Dec 2021",
       description: "",
       technologies: ["MySQL", "Oracle"],
-      achievements: [
-        "Provided technical support to internal clients, handling tickets related to problems and technical issues in our systems.",
-        "Performed problem analysis and identified root causes, ensuring efficient and complete resolution of issues reported by users.",
-        "Worked closely with the development team to investigate and fix bugs or system failures.",
-      ],
+      achievements: tArray("experience.job3.achievements"),
     },
   ];
 
@@ -134,15 +122,19 @@ const ExperienceSection = () => {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              <TextReveal text="Work Experience" type="word" delay={0.2} />
+              <TextReveal
+                key={t("experience.title")}
+                text={t("experience.title")}
+                type="word"
+                delay={0.2}
+              />
             </span>
           </motion.h2>
           <motion.p
             variants={itemVariants}
             className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
-            My professional journey in software development, working with
-            various technologies and teams to deliver impactful solutions.
+            {t("experience.description")}
           </motion.p>
         </motion.div>
 
@@ -227,7 +219,7 @@ const ExperienceSection = () => {
                   {/* Technologies */}
                   <div>
                     <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                      Technologies Used
+                      {t("experience.technologiesUsed")}
                     </h5>
                     <div className="flex flex-wrap gap-2">
                       {experience.technologies.map((tech) => (

@@ -5,14 +5,17 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ExternalLink, Github } from "lucide-react";
 import { Project } from "@/types/portfolio";
+import { useLanguage } from "@/contexts/LanguageContext";
+import TextReveal from "@/components/TextReveal";
 
 const ProjectsSection = () => {
+  const { t } = useLanguage();
+
   const projects: Project[] = [
     {
       id: "1",
-      title: "ig.news",
-      description:
-        "ig.news is a subscription-based newsletter application built with Next.js, featuring Stripe payments, user authentication, and content management through Prismic CMS.",
+      title: t("projects.project1.title"),
+      description: t("projects.project1.description"),
       videoUrl: "/ignews.mp4",
       technologies: ["Next.js", "ReactJs", "FaunaDB", "Stripe"],
       githubUrl: "https://github.com/rafamenegheti/ignews",
@@ -20,18 +23,16 @@ const ProjectsSection = () => {
     },
     {
       id: "2",
-      title: "dashgo.",
-      description:
-        "DashGo is a Next.js admin dashboard application built with Chakra UI that includes user authentication, data visualization charts, and user management functionality.",
+      title: t("projects.project2.title"),
+      description: t("projects.project2.description"),
       videoUrl: "/dashgo.mp4",
       technologies: ["Next.js", "TypeScript"],
       githubUrl: "https://github.com/rafamenegheti/dashgo",
     },
     {
       id: "3",
-      title: "BEWEAR",
-      description:
-        "BEWEAR is a modern e-commerce fashion website built with Next.js 15, featuring responsive design, user authentication, shopping cart functionality, and a complete product catalog for clothing and accessories.",
+      title: t("projects.project3.title"),
+      description: t("projects.project3.description"),
       videoUrl: "/bewear.mp4",
       technologies: ["Next.js", "ReactJs", "TailwindCSS"],
       githubUrl: "https://github.com/rafamenegheti/bewear",
@@ -94,16 +95,19 @@ const ProjectsSection = () => {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Featured Projects
+              <TextReveal
+                key={t("projects.title")}
+                text={t("projects.title")}
+                type="word"
+                delay={0.2}
+              />
             </span>
           </motion.h2>
           <motion.p
             variants={itemVariants}
             className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
-            A showcase of my recent work, featuring web applications, mobile
-            apps, and creative solutions that demonstrate my skills in modern
-            development technologies.
+            {t("projects.description")}
           </motion.p>
         </motion.div>
 

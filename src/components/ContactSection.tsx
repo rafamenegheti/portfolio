@@ -8,9 +8,11 @@ import InteractiveCard from "@/components/InteractiveCard";
 import { Mail, Phone, MapPin, Send, Github, Linkedin } from "lucide-react";
 import { ContactForm } from "@/types/portfolio";
 import { useToastContext } from "@/contexts/ToastContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ContactSection = () => {
   const { addToast } = useToastContext();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<ContactForm>({
     name: "",
     email: "",
@@ -34,8 +36,7 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     addToast({
-      message:
-        "🚧 Contact form is currently in development. This feature will be available soon!",
+      message: t("toast.contactInDev"),
       type: "info",
       duration: 6000,
     });
@@ -62,7 +63,7 @@ const ContactSection = () => {
       icon: MapPin,
       label: "Location",
       value: "Franca - SP, BR",
-      href: "https://maps.google.com/?q=San+Francisco,CA",
+      href: "https://maps.google.com/?q=Franca,SP",
     },
   ];
 
@@ -119,15 +120,19 @@ const ContactSection = () => {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              <TextReveal text="Get In Touch" type="word" delay={0.2} />
+              <TextReveal
+                key={t("contact.title")}
+                text={t("contact.title")}
+                type="word"
+                delay={0.2}
+              />
             </span>
           </motion.h2>
           <motion.p
             variants={itemVariants}
             className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
-            Have a project in mind or want to collaborate? I&apos;d love to hear
-            from you. Let&apos;s create something amazing together!
+            {t("contact.description")}
           </motion.p>
         </motion.div>
 
@@ -144,7 +149,7 @@ const ContactSection = () => {
                   variants={itemVariants}
                   className="text-2xl font-semibold text-gray-900 dark:text-white mb-6"
                 >
-                  Send a Message
+                  {t("contact.sendMessage")}
                 </motion.h3>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -154,7 +159,7 @@ const ContactSection = () => {
                         htmlFor="name"
                         className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                       >
-                        Name
+                        {t("contact.name")}
                       </label>
                       <input
                         type="text"
@@ -164,7 +169,7 @@ const ContactSection = () => {
                         onChange={handleInputChange}
                         required
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-                        placeholder="Your Name"
+                        placeholder={t("contact.namePlaceholder")}
                       />
                     </motion.div>
 
@@ -173,7 +178,7 @@ const ContactSection = () => {
                         htmlFor="email"
                         className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                       >
-                        Email
+                        {t("contact.email")}
                       </label>
                       <input
                         type="email"
@@ -183,7 +188,7 @@ const ContactSection = () => {
                         onChange={handleInputChange}
                         required
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-                        placeholder="your.email@example.com"
+                        placeholder={t("contact.emailPlaceholder")}
                       />
                     </motion.div>
                   </div>
@@ -193,7 +198,7 @@ const ContactSection = () => {
                       htmlFor="subject"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      Subject
+                      {t("contact.subject")}
                     </label>
                     <input
                       type="text"
@@ -203,7 +208,7 @@ const ContactSection = () => {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-                      placeholder="Project Collaboration"
+                      placeholder={t("contact.subjectPlaceholder")}
                     />
                   </motion.div>
 
@@ -212,7 +217,7 @@ const ContactSection = () => {
                       htmlFor="message"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      Message
+                      {t("contact.message")}
                     </label>
                     <textarea
                       id="message"
@@ -222,7 +227,7 @@ const ContactSection = () => {
                       required
                       rows={6}
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 resize-none"
-                      placeholder="Tell me about your project..."
+                      placeholder={t("contact.messagePlaceholder")}
                     />
                   </motion.div>
 
@@ -241,7 +246,9 @@ const ContactSection = () => {
                         )
                       }
                     >
-                      {isSubmitting ? "Sending..." : "Send Message"}
+                      {isSubmitting
+                        ? t("contact.sending")
+                        : t("contact.sendButton")}
                     </AnimatedButton>
                   </motion.div>
                 </form>
@@ -260,7 +267,7 @@ const ContactSection = () => {
               variants={itemVariants}
               className="text-2xl font-semibold text-gray-900 dark:text-white mb-6"
             >
-              Let&apos;s Connect
+              {t("contact.letsConnect")}
             </motion.h3>
 
             <div className="space-y-6">
@@ -290,7 +297,7 @@ const ContactSection = () => {
 
             <motion.div variants={itemVariants} className="pt-8">
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Follow Me
+                {t("contact.followMe")}
               </h4>
               <div className="flex space-x-4">
                 {socialLinks.map((social) => (

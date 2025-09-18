@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import InteractiveCard from "@/components/InteractiveCard";
 import TextReveal from "@/components/TextReveal";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Code2,
   Palette,
@@ -20,6 +21,8 @@ import {
 } from "lucide-react";
 
 const AboutSection = () => {
+  const { t } = useLanguage();
+
   const skills = [
     { name: "JavaScript", icon: Code2, category: "language" },
     { name: "TypeScript", icon: Code2, category: "language" },
@@ -94,19 +97,19 @@ const AboutSection = () => {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              <TextReveal text="About Me" type="word" delay={0.2} />
+              <TextReveal
+                key={t("about.title")}
+                text={t("about.title")}
+                type="word"
+                delay={0.2}
+              />
             </span>
           </motion.h2>
           <motion.p
             variants={itemVariants}
             className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
-            I’m a Full Stack Web Developer with 4 years of experience building
-            modern, scalable, and high-performance applications. Skilled in
-            Next.js, React, and Node.js, I specialize in delivering seamless
-            user experiences across the entire development cycle. I thrive on
-            turning complex challenges into efficient, innovative software
-            solutions.
+            {t("about.description")}
           </motion.p>
         </motion.div>
 
@@ -122,32 +125,14 @@ const AboutSection = () => {
               variants={itemVariants}
               className="text-2xl font-semibold text-gray-900 dark:text-white mb-4"
             >
-              My Journey
+              {t("about.journey")}
             </motion.h3>
 
             <motion.p
               variants={itemVariants}
               className="text-gray-600 dark:text-gray-400 leading-relaxed"
             >
-              I started my journey in tech over 4 years ago, first supporting
-              enterprise systems and later moving into full-stack web
-              development. Since then, I’ve had the opportunity to work on
-              diverse projects — from building scalable e-learning platforms and
-              B2B solutions to developing data-driven applications for
-              meteorological analysis.
-            </motion.p>
-
-            <motion.p
-              variants={itemVariants}
-              className="text-gray-600 dark:text-gray-400 leading-relaxed"
-            >
-              My approach combines technical expertise in Next.js, React,
-              Node.js, and AWS with a focus on clean code and performance
-              optimization. Outside of coding, I’m always exploring new
-              technologies, improving my craft through testing practices, and
-              working on personal projects that challenge my creativity. I
-              believe in building software that is not only functional, but also
-              maintainable, scalable, and impactful.
+              {t("about.journeyText")}
             </motion.p>
 
             <motion.div
@@ -159,7 +144,7 @@ const AboutSection = () => {
                   10+
                 </h4>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Projects Completed
+                  {t("about.projectsCompleted")}
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-md">
@@ -167,7 +152,7 @@ const AboutSection = () => {
                   4+
                 </h4>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Years Experience
+                  {t("about.yearsExperience")}
                 </p>
               </div>
             </motion.div>
@@ -183,7 +168,7 @@ const AboutSection = () => {
               variants={itemVariants}
               className="text-2xl font-semibold text-gray-900 dark:text-white mb-6"
             >
-              Skills & Technologies
+              {t("about.skillsTitle")}
             </motion.h3>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">

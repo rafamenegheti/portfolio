@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { Menu, X, Moon, Sun, Languages } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navigation = () => {
   const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -16,11 +18,11 @@ const Navigation = () => {
   }, []);
 
   const navItems = [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#about" },
-    { label: "Experience", href: "#experience" },
-    { label: "Projects", href: "#projects" },
-    { label: "Contact", href: "#contact" },
+    { label: t("nav.home"), href: "#home" },
+    { label: t("nav.about"), href: "#about" },
+    { label: t("nav.experience"), href: "#experience" },
+    { label: t("nav.projects"), href: "#projects" },
+    { label: t("nav.contact"), href: "#contact" },
   ];
 
   useEffect(() => {
@@ -83,23 +85,46 @@ const Navigation = () => {
 
           <div className="flex items-center space-x-4 md:flex-shrink-0">
             {mounted ? (
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 }}
-                onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
-                aria-label="Toggle theme"
-                title={`Current theme: ${theme}. Click to toggle.`}
-              >
-                {theme === "dark" ? (
-                  <Sun className="w-5 h-5 text-yellow-500" />
-                ) : (
-                  <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                )}
-              </motion.button>
+              <>
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 }}
+                  onClick={toggleLanguage}
+                  className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
+                  aria-label="Toggle language"
+                  title={`Current language: ${language}. Click to toggle.`}
+                >
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    {language === "en" ? "EN" : "PT"}
+                  </span>
+                  <div className="w-px h-4 bg-gray-400 dark:bg-gray-500"></div>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {language === "en" ? "PT" : "EN"}
+                  </span>
+                </motion.button>
+
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.4 }}
+                  onClick={toggleTheme}
+                  className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
+                  aria-label="Toggle theme"
+                  title={`Current theme: ${theme}. Click to toggle.`}
+                >
+                  {theme === "dark" ? (
+                    <Sun className="w-5 h-5 text-yellow-500" />
+                  ) : (
+                    <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                  )}
+                </motion.button>
+              </>
             ) : (
-              <div className="p-2 rounded-lg bg-gray-200 w-10 h-10 animate-pulse"></div>
+              <>
+                <div className="p-2 rounded-lg bg-gray-200 w-10 h-10 animate-pulse"></div>
+                <div className="p-2 rounded-lg bg-gray-200 w-10 h-10 animate-pulse"></div>
+              </>
             )}
 
             <div className="md:hidden">

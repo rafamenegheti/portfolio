@@ -5,8 +5,11 @@ import { motion } from "framer-motion";
 import { Download, Mail, Github, Linkedin } from "lucide-react";
 import TextReveal from "@/components/TextReveal";
 import AnimatedButton from "@/components/AnimatedButton";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const HeroSection = () => {
+  const { t } = useLanguage();
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -91,11 +94,21 @@ const HeroSection = () => {
           <motion.div variants={itemVariants} className="mb-8">
             <h1 className="text-5xl md:text-7xl font-bold mb-4">
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
-                <TextReveal text="Hi, I'm" type="word" delay={0.2} />
+                <TextReveal
+                  key={t("hero.greeting")}
+                  text={t("hero.greeting")}
+                  type="word"
+                  delay={0.2}
+                />
               </span>
               <br />
               <span className="text-gray-900 dark:text-white">
-                <TextReveal text="Rafael" type="char" delay={0.8} />
+                <TextReveal
+                  key={t("hero.name")}
+                  text={t("hero.name")}
+                  type="char"
+                  delay={0.8}
+                />
               </span>
             </h1>
           </motion.div>
@@ -103,15 +116,14 @@ const HeroSection = () => {
           <motion.div variants={itemVariants} className="mb-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
               <TextReveal
-                text="Full Stack Developer"
+                key={t("hero.title")}
+                text={t("hero.title")}
                 type="typewriter"
                 delay={1.5}
               />
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              I create beautiful, functional, and user-centered digital
-              experiences. Passionate about clean code, innovative solutions,
-              and bringing ideas to life.
+              {t("hero.description")}
             </p>
           </motion.div>
 
@@ -125,7 +137,7 @@ const HeroSection = () => {
               size="lg"
               icon={<Mail className="w-5 h-5" />}
             >
-              Get In Touch
+              {t("hero.getInTouch")}
             </AnimatedButton>
 
             <AnimatedButton
@@ -134,7 +146,7 @@ const HeroSection = () => {
               size="lg"
               icon={<Download className="w-5 h-5" />}
             >
-              Download CV
+              {t("hero.downloadCV")}
             </AnimatedButton>
           </motion.div>
 

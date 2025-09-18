@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ToastProvider } from "@/contexts/ToastContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import MagneticCursor from "@/components/MagneticCursor";
 import FloatingParticles from "@/components/FloatingParticles";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -18,9 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio - Rafael Menegheti",
+  title: "Portfólio - Rafael Menegheti",
   description:
-    "Personal portfolio showcasing full-stack development projects and skills.",
+    "Portfólio pessoal apresentando projetos e habilidades de desenvolvimento full-stack.",
 };
 
 export default function RootLayout({
@@ -29,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -49,12 +50,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
-          <ToastProvider>
-            <MagneticCursor />
-            <FloatingParticles />
-            <ScrollProgress />
-            {children}
-          </ToastProvider>
+          <LanguageProvider>
+            <ToastProvider>
+              <MagneticCursor />
+              <FloatingParticles />
+              <ScrollProgress />
+              {children}
+            </ToastProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
