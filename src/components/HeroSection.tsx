@@ -91,9 +91,15 @@ const HeroSection = () => {
           animate="visible"
           className="text-center"
         >
-          <motion.div variants={itemVariants} className="mb-8">
-            <h1 className="text-5xl md:text-7xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
+          <motion.div variants={itemVariants} className="mb-8 px-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4">
+              <span
+                className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent"
+                style={{
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
                 <TextReveal
                   key={t("hero.greeting")}
                   text={t("hero.greeting")}
@@ -106,7 +112,7 @@ const HeroSection = () => {
                 <TextReveal
                   key={t("hero.name")}
                   text={t("hero.name")}
-                  type="char"
+                  type="word"
                   delay={0.8}
                 />
               </span>
