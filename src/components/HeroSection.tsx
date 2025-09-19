@@ -93,11 +93,15 @@ const HeroSection = () => {
         >
           <motion.div variants={itemVariants} className="mb-8 px-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4">
-              <span
-                className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent"
+              <div
+                className="inline-block text-blue-600 dark:text-blue-400"
                 style={{
+                  background:
+                    "linear-gradient(to right, #2563eb, #9333ea, #1e40af)",
                   WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
                   WebkitTextFillColor: "transparent",
+                  color: "#2563eb",
                 }}
               >
                 <TextReveal
@@ -106,7 +110,7 @@ const HeroSection = () => {
                   type="word"
                   delay={0.2}
                 />
-              </span>
+              </div>
               <br />
               <span className="text-gray-900 dark:text-white">
                 <TextReveal
