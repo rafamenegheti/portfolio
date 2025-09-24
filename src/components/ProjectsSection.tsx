@@ -14,6 +14,23 @@ const ProjectsSection = () => {
   const projects: Project[] = [
     {
       id: "1",
+      title: t("projects.project4.title"),
+      description: t("projects.project4.description"),
+      videoUrl: "/mcdonalds.mp4",
+      technologies: ["Next.js", "PostgreSQL", "Prisma", "Stripe"],
+      githubUrl: "https://github.com/rafamenegheti/mcdonalds-self-attending",
+      liveUrl: "https://mcdonalds-self-attending.vercel.app/mcdonalds",
+    },
+    {
+      id: "2",
+      title: t("projects.project3.title"),
+      description: t("projects.project3.description"),
+      videoUrl: "/bewear.mp4",
+      technologies: ["Next.js", "ReactJs", "TailwindCSS"],
+      githubUrl: "https://github.com/rafamenegheti/bewear",
+    },
+    {
+      id: "3",
       title: t("projects.project1.title"),
       description: t("projects.project1.description"),
       videoUrl: "/ignews.mp4",
@@ -22,20 +39,12 @@ const ProjectsSection = () => {
       liveUrl: "https://ignews-qos25pzu8-rafamenegheti.vercel.app",
     },
     {
-      id: "2",
+      id: "4",
       title: t("projects.project2.title"),
       description: t("projects.project2.description"),
       videoUrl: "/dashgo.mp4",
       technologies: ["Next.js", "TypeScript"],
       githubUrl: "https://github.com/rafamenegheti/dashgo",
-    },
-    {
-      id: "3",
-      title: t("projects.project3.title"),
-      description: t("projects.project3.description"),
-      videoUrl: "/bewear.mp4",
-      technologies: ["Next.js", "ReactJs", "TailwindCSS"],
-      githubUrl: "https://github.com/rafamenegheti/bewear",
     },
   ];
 

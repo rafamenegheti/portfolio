@@ -115,6 +115,10 @@ const translations = {
     "projects.project3.description":
       "BEWEAR is a modern e-commerce fashion website built with Next.js 15, featuring responsive design, user authentication, shopping cart functionality, and a complete product catalog for clothing and accessories.",
 
+    "projects.project4.title": "McDonald's Self Attending",
+    "projects.project4.description":
+      "McDonald's Self Attending is a restaurant ordering platform built with Next.js, featuring multi-restaurant support, shopping cart functionality, order management, and integrated Stripe payments with PostgreSQL database through Prisma ORM.",
+
     // Contact Section
     "contact.title": "Get In Touch",
     "contact.description":
@@ -217,6 +221,10 @@ const translations = {
     "projects.project3.title": "BEWEAR",
     "projects.project3.description":
       "BEWEAR é um site moderno de e-commerce de moda construído com Next.js 15, apresentando design responsivo, autenticação de usuários, funcionalidade de carrinho de compras e um catálogo completo de produtos para roupas e acessórios.",
+
+    "projects.project4.title": "McDonald's Self Attending",
+    "projects.project4.description":
+      "McDonald's Self Attending é uma plataforma de pedidos para restaurantes construída com Next.js, oferecendo suporte multi-restaurante, funcionalidade de carrinho de compras, gerenciamento de pedidos e pagamentos integrados via Stripe com banco de dados PostgreSQL através do Prisma ORM.",
 
     // Contact Section
     "contact.title": "Entre em Contato",
