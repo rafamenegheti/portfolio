@@ -19,9 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portfólio - Rafael Menegheti",
+  title: "Portfolio - Rafael Menegheti",
   description:
-    "Portfólio pessoal apresentando projetos e habilidades de desenvolvimento full-stack.",
+    "Personal portfolio showcasing full-stack development projects and skills.",
 };
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

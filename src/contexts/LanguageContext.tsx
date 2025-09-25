@@ -261,7 +261,7 @@ const translations = {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({
   children,
 }) => {
-  const [language, setLanguage] = useState<Language>("pt");
+  const [language, setLanguage] = useState<Language>("en");
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem("language") as Language;
