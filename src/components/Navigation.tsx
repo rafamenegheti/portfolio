@@ -60,7 +60,7 @@ const Navigation = () => {
             transition={{ delay: 0.2 }}
             className="flex-shrink-0"
           >
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent opacity-0">
               Rafael
             </h1>
           </motion.div>
