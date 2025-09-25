@@ -5,38 +5,44 @@ import { motion } from "framer-motion";
 import InteractiveCard from "@/components/InteractiveCard";
 import TextReveal from "@/components/TextReveal";
 import { useLanguage } from "@/contexts/LanguageContext";
+// Technology-specific icons from react-icons
 import {
-  Code2,
-  Palette,
-  Database,
-  Globe,
-  Server,
-  GitBranchPlus,
-  TestTube,
-  Zap,
-  FileText,
-  Cloud,
-  Container,
-  Braces,
-} from "lucide-react";
+  SiJavascript,
+  SiTypescript,
+  SiReact,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiPython,
+  SiCplusplus,
+  SiHtml5,
+  SiCss3,
+  SiPostgresql,
+  SiMongodb,
+  SiGit,
+  SiAmazon,
+  SiDocker,
+  SiJest,
+} from "react-icons/si";
+// Keep some Lucide icons for concepts that don't have specific tech icons
+import { Zap, FileText, Code2 } from "lucide-react";
 
 const AboutSection = () => {
   const { t } = useLanguage();
 
   const skills = [
-    { name: "JavaScript", icon: Code2, category: "language" },
-    { name: "TypeScript", icon: Code2, category: "language" },
-    { name: "React/Next.js", icon: Braces, category: "frontend" },
-    { name: "React Native", icon: Globe, category: "mobile" },
-    { name: "Node/Express", icon: Server, category: "backend" },
-    { name: "Python", icon: Code2, category: "language" },
-    { name: "C++", icon: Code2, category: "language" },
-    { name: "HTML/CSS", icon: Palette, category: "frontend" },
-    { name: "SQL/NoSQL", icon: Database, category: "database" },
-    { name: "Git", icon: GitBranchPlus, category: "tools" },
-    { name: "AWS", icon: Cloud, category: "cloud" },
-    { name: "Docker", icon: Container, category: "tools" },
-    { name: "Jest/Testing", icon: TestTube, category: "testing" },
+    { name: "JavaScript", icon: SiJavascript, category: "language" },
+    { name: "TypeScript", icon: SiTypescript, category: "language" },
+    { name: "React/Next.js", icon: SiReact, category: "frontend" },
+    { name: "React Native", icon: SiReact, category: "mobile" },
+    { name: "Node/Express", icon: SiNodedotjs, category: "backend" },
+    { name: "Python", icon: SiPython, category: "language" },
+    { name: "C++", icon: SiCplusplus, category: "language" },
+    { name: "HTML/CSS", icon: SiHtml5, category: "frontend" },
+    { name: "SQL/NoSQL", icon: SiPostgresql, category: "database" },
+    { name: "Git", icon: SiGit, category: "tools" },
+    { name: "AWS", icon: SiAmazon, category: "cloud" },
+    { name: "Docker", icon: SiDocker, category: "tools" },
+    { name: "Jest/Testing", icon: SiJest, category: "testing" },
     { name: "AI Tools", icon: Zap, category: "tools" },
     { name: "Clean Code", icon: FileText, category: "practices" },
   ];
