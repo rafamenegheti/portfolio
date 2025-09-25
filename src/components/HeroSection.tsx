@@ -8,7 +8,7 @@ import AnimatedButton from "@/components/AnimatedButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const HeroSection = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -42,8 +42,18 @@ const HeroSection = () => {
 
   const downloadCV = () => {
     const link = document.createElement("a");
-    link.href = "/RafaelC2.pdf";
-    link.download = "Rafael Menegheti CV.pdf";
+    // Use language-specific CV files
+    const cvFile =
+      language === "en"
+        ? "/RafaelMeneghetiCVEnglish.pdf"
+        : "/RafaelMeneghetiCVPortuguese.pdf";
+    const downloadName =
+      language === "en"
+        ? "Rafael Menegheti CV - English.pdf"
+        : "Rafael Menegheti CV - Português.pdf";
+
+    link.href = cvFile;
+    link.download = downloadName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
