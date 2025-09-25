@@ -57,7 +57,7 @@ const translations = {
       "I'm a Full Stack Web Developer with 4 years of experience building modern, scalable, and high-performance applications. Skilled in Next.js, React, and Node.js, I specialize in delivering seamless user experiences across the entire development cycle. With a strong foundation in cloud solutions (AWS), automated testing, and clean code practices, I thrive on turning complex challenges into efficient, innovative software solutions.",
     "about.journey": "My Journey",
     "about.journeyText":
-      "I started my journey in tech over 4 years ago, first supporting enterprise systems and later moving into full-stack web development. My curiosity led me to explore both frontend and backend technologies, mastering React, Next.js for dynamic user interfaces, and Node.js, databases for robust backend systems. I love connecting design with functionality, ensuring seamless experiences from server to client.",
+      "I started my journey first supporting enterprise systems and later moving into full-stack web development. My curiosity led me to explore both frontend and backend technologies, mastering React, Next.js for dynamic user interfaces, and Node.js, databases for robust backend systems. I love connecting design with functionality, ensuring seamless experiences from server to client.",
     "about.yearsExperience": "Years Experience",
     "about.projectsCompleted": "Projects Completed",
     "about.skillsTitle": "Skills & Technologies",
@@ -168,7 +168,7 @@ const translations = {
       "Sou um Desenvolvedor Web Full Stack com 4 anos de experiência construindo aplicações modernas, escaláveis e de alta performance. Especializado em Next.js, React e Node.js, me especializo em entregar experiências de usuário perfeitas ao longo de todo o ciclo de desenvolvimento. Com uma base sólida em soluções em nuvem (AWS), testes automatizados e práticas de código limpo, prospero transformando desafios complexos em soluções de software eficientes e inovadoras.",
     "about.journey": "Minha Jornada",
     "about.journeyText":
-      "Comecei minha jornada na tecnologia há mais de 4 anos, primeiro dando suporte a sistemas empresariais e depois migrando para desenvolvimento web full-stack. Minha curiosidade me levou a explorar tecnologias frontend e backend, dominando React, Next.js para interfaces dinâmicas, e Node.js, bancos de dados para sistemas backend robustos. Adoro conectar design com funcionalidade, garantindo experiências perfeitas do servidor ao cliente.",
+      "Comecei minha jornada na tecnologia primeiro dando suporte a sistemas empresariais e depois migrando para desenvolvimento web full-stack. Minha curiosidade me levou a explorar tecnologias frontend e backend, dominando React, Next.js para interfaces dinâmicas, e Node.js, bancos de dados para sistemas backend robustos. Adoro conectar design com funcionalidade, garantindo experiências perfeitas do servidor ao cliente.",
     "about.yearsExperience": "Anos de Experiência",
     "about.projectsCompleted": "Projetos Concluídos",
     "about.skillsTitle": "Habilidades & Tecnologias",
