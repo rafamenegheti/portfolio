@@ -10,21 +10,19 @@ import {
   SiJavascript,
   SiTypescript,
   SiReact,
-  SiNextdotjs,
   SiNodedotjs,
   SiPython,
+  SiSpring,
   SiCplusplus,
   SiHtml5,
-  SiCss3,
   SiPostgresql,
-  SiMongodb,
   SiGit,
   SiAmazon,
   SiDocker,
   SiJest,
 } from "react-icons/si";
 // Keep some Lucide icons for concepts that don't have specific tech icons
-import { Zap, FileText, Code2 } from "lucide-react";
+import { Zap, FileText } from "lucide-react";
 
 const AboutSection = () => {
   const { t } = useLanguage();
@@ -35,6 +33,7 @@ const AboutSection = () => {
     { name: "React/Next.js", icon: SiReact, category: "frontend" },
     { name: "React Native", icon: SiReact, category: "mobile" },
     { name: "Node/Express", icon: SiNodedotjs, category: "backend" },
+    { name: "Spring Boot", icon: SiSpring, category: "backend" },
     { name: "Python", icon: SiPython, category: "language" },
     { name: "C++", icon: SiCplusplus, category: "language" },
     { name: "HTML/CSS", icon: SiHtml5, category: "frontend" },
