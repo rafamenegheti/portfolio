@@ -43,10 +43,7 @@ const HeroSection = () => {
   const downloadCV = () => {
     const link = document.createElement("a");
     // Use language-specific CV files
-    const cvFile =
-      language === "en"
-        ? "/RafaelMeneghetiCVEnglish.pdf"
-        : "/RafaelMeneghetiCVPortuguese.pdf";
+    const cvFile = language === "en" ? "/Rafael Carvalho.pdf" : "/Rafael C.pdf";
     const downloadName =
       language === "en"
         ? "Rafael Menegheti CV - English.pdf"
