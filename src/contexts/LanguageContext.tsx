@@ -50,6 +50,7 @@ const translations = {
       "I create beautiful, functional, and user-centered digital experiences. Passionate about clean code, innovative solutions, and bringing ideas to life.",
     "hero.getInTouch": "Get In Touch",
     "hero.downloadCV": "Download CV",
+    "hero.available": "Available for new projects",
 
     // About Section
     "about.title": "About Me",
@@ -161,6 +162,7 @@ const translations = {
       "Eu crio experiências digitais bonitas, funcionais e centradas no usuário. Apaixonado por código limpo, soluções inovadoras e dar vida às ideias.",
     "hero.getInTouch": "Entre em Contato",
     "hero.downloadCV": "Baixar CV",
+    "hero.available": "Disponível para novos projetos",
 
     // About Section
     "about.title": "Sobre Mim",
