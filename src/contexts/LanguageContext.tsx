@@ -102,6 +102,8 @@ const translations = {
     "projects.title": "Featured Projects",
     "projects.description":
       "A showcase of my recent work, featuring web applications, mobile apps, and creative solutions that demonstrate my skills in modern development technologies.",
+    "projects.webApps.title": "Web Applications",
+    "projects.apis.title": "RESTful APIs Projects",
 
     // Project Details
     "projects.project1.title": "ig.news",
@@ -123,6 +125,19 @@ const translations = {
     "projects.project5.title": "SpaceTraveling",
     "projects.project5.description":
       "SpaceTraveling is a modern blog platform built with Next.js 10, featuring a headless CMS integration with Prismic, static site generation, pagination functionality, and a complete article reading experience with navigation between posts and integrated comments system.",
+
+    // API Projects
+    "projects.api1.title": "iCompras",
+    "projects.api1.description":
+      "A complete e-commerce platform built using microservices architecture to demonstrate modern distributed system patterns. The project showcases how to build scalable, event-driven applications using Spring Boot and Apache Kafka.",
+
+    "projects.api2.title": "Contact Management System",
+    "projects.api2.description":
+      "This is a robust REST API for contact management built with modern Node.js technologies. The system provides comprehensive CRUD operations for contacts and their associated phone numbers, featuring advanced search capabilities and weather integration.",
+
+    "projects.api3.title": "rentx",
+    "projects.api3.description":
+      "This is a car rental management system built as a RESTful API. The project handles car registrations, user accounts, and rental operations.",
 
     // Contact Section
     "contact.title": "Get In Touch",
@@ -214,6 +229,8 @@ const translations = {
     "projects.title": "Projetos em Destaque",
     "projects.description":
       "Uma vitrine do meu trabalho recente, apresentando aplicações web, aplicativos móveis e soluções criativas que demonstram minhas habilidades em tecnologias de desenvolvimento modernas.",
+    "projects.webApps.title": "Aplicações Web",
+    "projects.apis.title": "Projetos de RESTful APIs",
 
     // Project Details
     "projects.project1.title": "ig.news",
@@ -235,6 +252,19 @@ const translations = {
     "projects.project5.title": "SpaceTraveling",
     "projects.project5.description":
       "SpaceTraveling é uma plataforma de blog moderna construída com Next.js 10, apresentando integração com CMS headless Prismic, geração de sites estáticos, funcionalidade de paginação e uma experiência completa de leitura de artigos com navegação entre posts e sistema de comentários integrado.",
+
+    // API Projects
+    "projects.api1.title": "iCompras",
+    "projects.api1.description":
+      "Uma plataforma completa de e-commerce construída usando arquitetura de microserviços para demonstrar padrões modernos de sistemas distribuídos. O projeto demonstra como construir aplicações escaláveis e orientadas a eventos usando Spring Boot e Apache Kafka.",
+
+    "projects.api2.title": "Sistema de Gerenciamento de Contatos",
+    "projects.api2.description":
+      "Esta é uma API REST robusta para gerenciamento de contatos construída com tecnologias modernas Node.js. O sistema fornece operações CRUD abrangentes para contatos e seus números de telefone associados, apresentando capacidades avançadas de busca e integração com dados meteorológicos.",
+
+    "projects.api3.title": "rentx",
+    "projects.api3.description":
+      "Este é um sistema de gerenciamento de aluguel de carros construído como uma API RESTful. O projeto gerencia registros de carros, contas de usuários e operações de aluguel.",
 
     // Contact Section
     "contact.title": "Entre em Contato",
