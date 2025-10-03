@@ -102,7 +102,7 @@ const translations = {
     "projects.title": "Featured Projects",
     "projects.description":
       "A showcase of my recent work, featuring web applications, mobile apps, and creative solutions that demonstrate my skills in modern development technologies.",
-    "projects.webApps.title": "Web Applications",
+    "projects.webApps.title": "Fullstack Applications",
     "projects.apis.title": "RESTful APIs Projects",
 
     // Project Details
@@ -229,7 +229,7 @@ const translations = {
     "projects.title": "Projetos em Destaque",
     "projects.description":
       "Uma vitrine do meu trabalho recente, apresentando aplicações web, aplicativos móveis e soluções criativas que demonstram minhas habilidades em tecnologias de desenvolvimento modernas.",
-    "projects.webApps.title": "Aplicações Web",
+    "projects.webApps.title": "Aplicações Fullstack",
     "projects.apis.title": "Projetos de RESTful APIs",
 
     // Project Details
