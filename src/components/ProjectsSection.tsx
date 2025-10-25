@@ -40,6 +40,14 @@ const ProjectsSection = () => {
     },
     {
       id: "4",
+      title: t("projects.project5.title"),
+      description: t("projects.project5.description"),
+      videoUrl: "/angularMarketplace.mkv",
+      technologies: ["JavaScript", "TypeScript", "Angular"],
+      githubUrl: "https://github.com/rafamenegheti/angular-marketplace",
+    },
+    {
+      id: "5",
       title: t("projects.project2.title"),
       description: t("projects.project2.description"),
       videoUrl: "/dashgo.mp4",
@@ -47,9 +55,9 @@ const ProjectsSection = () => {
       githubUrl: "https://github.com/rafamenegheti/dashgo",
     },
     {
-      id: "5",
-      title: t("projects.project5.title"),
-      description: t("projects.project5.description"),
+      id: "6",
+      title: t("projects.project6.title"),
+      description: t("projects.project6.description"),
       videoUrl: "/spacetraveling.mkv",
       technologies: ["Next.js", "Prismic CMS", "TypeScript"],
       githubUrl: "https://github.com/rafamenegheti/spacetraveling",

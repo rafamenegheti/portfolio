@@ -122,8 +122,12 @@ const translations = {
     "projects.project4.description":
       "McDonald's Self Attending is a restaurant ordering platform built with Next.js, featuring multi-restaurant support, shopping cart functionality, order management, and integrated Stripe payments with PostgreSQL database through Prisma ORM.",
 
-    "projects.project5.title": "SpaceTraveling",
+    "projects.project5.title": "Angular Marketplace",
     "projects.project5.description":
+      "This is a modern, well-structured Angular application following current best practices and using the latest Angular features for a marketplace product management system.",
+
+    "projects.project6.title": "SpaceTraveling",
+    "projects.project6.description":
       "SpaceTraveling is a modern blog platform built with Next.js 10, featuring a headless CMS integration with Prismic, static site generation, pagination functionality, and a complete article reading experience with navigation between posts and integrated comments system.",
 
     // API Projects
@@ -249,8 +253,12 @@ const translations = {
     "projects.project4.description":
       "McDonald's Self Attending é uma plataforma de pedidos para restaurantes construída com Next.js, oferecendo suporte multi-restaurante, funcionalidade de carrinho de compras, gerenciamento de pedidos e pagamentos integrados via Stripe com banco de dados PostgreSQL através do Prisma ORM.",
 
-    "projects.project5.title": "SpaceTraveling",
+    "projects.project5.title": "Angular Marketplace",
     "projects.project5.description":
+      "Esta é uma aplicação Angular moderna e bem estruturada seguindo as melhores práticas atuais e usando os recursos mais recentes do Angular para um sistema de gerenciamento de produtos de marketplace.",
+
+    "projects.project6.title": "SpaceTraveling",
+    "projects.project6.description":
       "SpaceTraveling é uma plataforma de blog moderna construída com Next.js 10, apresentando integração com CMS headless Prismic, geração de sites estáticos, funcionalidade de paginação e uma experiência completa de leitura de artigos com navegação entre posts e sistema de comentários integrado.",
 
     // API Projects
