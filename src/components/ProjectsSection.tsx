@@ -17,7 +17,13 @@ const ProjectsSection = () => {
       title: t("projects.project4.title"),
       description: t("projects.project4.description"),
       videoUrl: "/mcdonalds.mp4",
-      technologies: ["Next.js", "PostgreSQL", "Prisma", "Stripe"],
+      technologies: [
+        "Next.js",
+        "PostgreSQL",
+        "Prisma",
+        "Stripe",
+        "TailwindCSS",
+      ],
       githubUrl: "https://github.com/rafamenegheti/mcdonalds-self-attending",
       liveUrl: "https://mcdonalds-self-attending.vercel.app/mcdonalds",
     },
@@ -43,7 +49,7 @@ const ProjectsSection = () => {
       title: t("projects.project5.title"),
       description: t("projects.project5.description"),
       videoUrl: "/angularMarketplace.mkv",
-      technologies: ["JavaScript", "TypeScript", "Angular"],
+      technologies: ["JavaScript", "TypeScript", "Angular", "TailwindCSS"],
       githubUrl: "https://github.com/rafamenegheti/angular-marketplace",
     },
     {
