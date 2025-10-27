@@ -18,6 +18,7 @@ const ProjectsSection = () => {
       description: t("projects.project4.description"),
       videoUrl: "/mcdonalds.mp4",
       technologies: [
+        "React.js",
         "Next.js",
         "PostgreSQL",
         "Prisma",
@@ -32,7 +33,7 @@ const ProjectsSection = () => {
       title: t("projects.project3.title"),
       description: t("projects.project3.description"),
       videoUrl: "/bewear.mp4",
-      technologies: ["Next.js", "ReactJs", "TailwindCSS"],
+      technologies: ["Next.js", "React.js", "TailwindCSS"],
       githubUrl: "https://github.com/rafamenegheti/bewear",
     },
     {
@@ -40,7 +41,7 @@ const ProjectsSection = () => {
       title: t("projects.project1.title"),
       description: t("projects.project1.description"),
       videoUrl: "/ignews.mp4",
-      technologies: ["Next.js", "ReactJs", "FaunaDB", "Stripe"],
+      technologies: ["Next.js", "React.js", "FaunaDB", "Stripe"],
       githubUrl: "https://github.com/rafamenegheti/ignews",
       liveUrl: "https://ignews-qos25pzu8-rafamenegheti.vercel.app",
     },
@@ -57,7 +58,7 @@ const ProjectsSection = () => {
       title: t("projects.project2.title"),
       description: t("projects.project2.description"),
       videoUrl: "/dashgo.mp4",
-      technologies: ["Next.js", "TypeScript"],
+      technologies: ["React.js", "Next.js", "TypeScript"],
       githubUrl: "https://github.com/rafamenegheti/dashgo",
     },
     {
@@ -65,7 +66,7 @@ const ProjectsSection = () => {
       title: t("projects.project6.title"),
       description: t("projects.project6.description"),
       videoUrl: "/spacetraveling.mkv",
-      technologies: ["Next.js", "Prismic CMS", "TypeScript"],
+      technologies: ["React.js", "Next.js", "Prismic CMS", "TypeScript"],
       githubUrl: "https://github.com/rafamenegheti/spacetraveling",
     },
   ];
