@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Download, Mail, Github, Linkedin, Code2, Coffee } from "lucide-react";
+import Image from "next/image";
 import TextReveal from "@/components/TextReveal";
 import AnimatedButton from "@/components/AnimatedButton";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -102,6 +103,24 @@ const HeroSection = () => {
           animate="visible"
           className="text-center"
         >
+          <motion.div
+            variants={itemVariants}
+            className="mb-8 flex justify-center"
+          >
+            <motion.div whileHover={{ scale: 1.05 }} className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur-2xl opacity-30 dark:opacity-20 animate-pulse"></div>
+              <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-2xl">
+                <Image
+                  src="/foto.png"
+                  alt="Rafael Menegheti"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+
           <motion.div variants={itemVariants} className="mb-6 px-4">
             {/* <div className="inline-flex items-center bg-gray-900 dark:bg-gray-800 text-green-400 px-4 py-2 rounded-lg font-mono text-sm mb-4">
               <span className="text-gray-500">$</span>
