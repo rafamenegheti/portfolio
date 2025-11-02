@@ -24,7 +24,7 @@ const ExperienceSection = () => {
   const experiences: Experience[] = [
     {
       id: "1",
-      company: "Sync-OS",
+      company: "Sync-OS (Vale)",
       position: t("experience.job1.position"),
       location: "Remote",
       startDate: "Jan 2023",
