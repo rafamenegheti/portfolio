@@ -69,6 +69,7 @@ const translations = {
       "My professional journey in software development, working with various technologies and teams to deliver impactful solutions.",
     "experience.technologiesUsed": "Technologies Used",
     "experience.present": "Present",
+    "experience.remote": "Remote",
 
     // Job Positions
     "experience.job1.position": "Full Stack Developer",
@@ -200,6 +201,7 @@ const translations = {
       "Minha jornada profissional no desenvolvimento de software, trabalhando com várias tecnologias e equipes para entregar soluções impactantes.",
     "experience.technologiesUsed": "Tecnologias Utilizadas",
     "experience.present": "Atual",
+    "experience.remote": "Remoto",
 
     // Job Positions
     "experience.job1.position": "Desenvolvedor Full Stack",
