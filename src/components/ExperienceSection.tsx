@@ -1,10 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import TextReveal from "@/components/TextReveal";
 import { Calendar, MapPin, Briefcase } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@/hooks/useGSAP";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface Experience {
   id: string;
@@ -20,6 +27,85 @@ interface Experience {
 
 const ExperienceSection = () => {
   const { t, tArray } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // Timeline animation for experience cards
+    if (timelineRef.current) {
+      const cards = timelineRef.current.querySelectorAll(".experience-card");
+
+      cards.forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          {
+            opacity: 0,
+            x: index % 2 === 0 ? -100 : 100,
+            scale: 0.9,
+          },
+          {
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        // Timeline dot animation
+        const dot = card.querySelector(".timeline-dot");
+        if (dot) {
+          gsap.fromTo(
+            dot,
+            {
+              scale: 0,
+              rotation: -180,
+            },
+            {
+              scale: 1,
+              rotation: 0,
+              duration: 0.6,
+              ease: "back.out(1.7)",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+
+        // Technologies stagger animation
+        const techTags = card.querySelectorAll(".tech-tag");
+        if (techTags.length > 0) {
+          gsap.fromTo(
+            techTags,
+            {
+              opacity: 0,
+              scale: 0.8,
+            },
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 0.4,
+              stagger: 0.05,
+              ease: "back.out(1.7)",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 70%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+      });
+    }
+  }, []);
 
   const experiences: Experience[] = [
     {
@@ -109,7 +195,11 @@ const ExperienceSection = () => {
   };
 
   return (
-    <section id="experience" className="py-20 bg-white dark:bg-gray-900">
+    <section
+      ref={sectionRef}
+      id="experience"
+      className="py-20 bg-white dark:bg-gray-900"
+    >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <motion.div
           variants={containerVariants}
@@ -145,19 +235,9 @@ const ExperienceSection = () => {
           </motion.p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="space-y-8"
-        >
+        <div ref={timelineRef} className="space-y-8">
           {experiences.map((experience, index) => (
-            <motion.div
-              key={experience.id}
-              variants={itemVariants}
-              className="relative"
-            >
+            <div key={experience.id} className="experience-card relative">
               <div className="flex flex-col md:flex-row gap-6">
                 {/* Timeline dot */}
                 <div className="flex-shrink-0 relative">
@@ -168,7 +248,7 @@ const ExperienceSection = () => {
                       style={{ height: "calc(100% + 2rem)" }}
                     ></div>
                   )}
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-lg relative z-10">
+                  <div className="timeline-dot w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-lg relative z-10">
                     <Briefcase className="w-6 h-6 text-white" />
                   </div>
                 </div>
@@ -232,7 +312,7 @@ const ExperienceSection = () => {
                       {experience.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full"
+                          className="tech-tag px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full"
                         >
                           {tech}
                         </span>
@@ -241,9 +321,9 @@ const ExperienceSection = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

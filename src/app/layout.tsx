@@ -6,6 +6,8 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import MagneticCursor from "@/components/MagneticCursor";
 import FloatingParticles from "@/components/FloatingParticles";
 import ScrollProgress from "@/components/ScrollProgress";
+import PageLoader from "@/components/PageLoader";
+import AnimatedBackground from "@/components/AnimatedBackground";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -52,6 +54,8 @@ export default function RootLayout({
         <ThemeProvider>
           <LanguageProvider>
             <ToastProvider>
+              <PageLoader />
+              <AnimatedBackground />
               <MagneticCursor />
               <FloatingParticles />
               <ScrollProgress />

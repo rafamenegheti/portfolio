@@ -1,12 +1,20 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ExternalLink, Github } from "lucide-react";
 import { Project } from "@/types/portfolio";
 import { useLanguage } from "@/contexts/LanguageContext";
 import TextReveal from "@/components/TextReveal";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP, use3DTilt } from "@/hooks/useGSAP";
+import MorphingCard from "@/components/MorphingCard";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const ProjectsSection = () => {
   const { t } = useLanguage();
@@ -136,49 +144,236 @@ const ProjectsSection = () => {
     },
   };
 
-  const cardVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-      },
-    },
+  const ProjectCard = ({ project }: { project: Project }) => {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const tiltRef = use3DTilt<HTMLDivElement>(15);
+
+    useEffect(() => {
+      const card = cardRef.current;
+      if (!card) return;
+
+      // Scroll reveal animation
+      gsap.fromTo(
+        card,
+        {
+          opacity: 0,
+          y: 100,
+          scale: 0.9,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Hover lift effect
+      const handleMouseEnter = () => {
+        gsap.to(card, {
+          y: -15,
+          scale: 1.02,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+      };
+
+      const handleMouseLeave = () => {
+        gsap.to(card, {
+          y: 0,
+          scale: 1,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+      };
+
+      card.addEventListener("mouseenter", handleMouseEnter);
+      card.addEventListener("mouseleave", handleMouseLeave);
+
+      return () => {
+        card.removeEventListener("mouseenter", handleMouseEnter);
+        card.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    }, []);
+
+    return (
+      <div
+        ref={(el) => {
+          cardRef.current = el;
+          if (el && tiltRef.current !== el) {
+            (tiltRef as React.MutableRefObject<HTMLDivElement | null>).current =
+              el;
+          }
+        }}
+        className="group relative bg-gray-50 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        <div className="relative aspect-video overflow-hidden">
+          {project.videoUrl ? (
+            <video
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
+              <source src={project.videoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <Image
+              src={project.imageUrl!}
+              alt={project.title}
+              width={400}
+              height={200}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            />
+          )}
+
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div className="flex space-x-4">
+              {project.liveUrl && (
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors duration-200"
+                >
+                  <ExternalLink className="w-5 h-5 text-white" />
+                </motion.a>
+              )}
+              <motion.a
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors duration-200"
+              >
+                <Github className="w-5 h-5 text-white" />
+              </motion.a>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+            {project.title}
+          </h3>
+
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
+            {project.description}
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {project.technologies.map((tech) => (
+              <span
+                key={tech}
+                className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-medium rounded-full"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 dark:opacity-100 dark:group-hover:opacity-50 transition-opacity duration-300 pointer-events-none"></div>
+      </div>
+    );
   };
 
-  const renderProjectCard = (project: Project) => (
-    <motion.div
-      key={project.id}
-      variants={cardVariants}
-      whileHover={{ y: -10 }}
-      className="group relative bg-gray-50 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-    >
-      <div className="relative aspect-video overflow-hidden">
-        {project.videoUrl ? (
-          <video
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            autoPlay
-            loop
-            muted
-            playsInline
-          >
-            <source src={project.videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        ) : (
-          <Image
-            src={project.imageUrl!}
-            alt={project.title}
-            width={400}
-            height={200}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-          />
-        )}
+  const ApiCard = ({ project }: { project: Project }) => {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const tiltRef = use3DTilt<HTMLDivElement>(10);
 
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <div className="flex space-x-4">
+    useEffect(() => {
+      const card = cardRef.current;
+      if (!card) return;
+
+      gsap.fromTo(
+        card,
+        {
+          opacity: 0,
+          y: 80,
+          scale: 0.95,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      const handleMouseEnter = () => {
+        gsap.to(card, {
+          y: -10,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      };
+
+      const handleMouseLeave = () => {
+        gsap.to(card, {
+          y: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      };
+
+      card.addEventListener("mouseenter", handleMouseEnter);
+      card.addEventListener("mouseleave", handleMouseLeave);
+
+      return () => {
+        card.removeEventListener("mouseenter", handleMouseEnter);
+        card.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    }, []);
+
+    return (
+      <div
+        ref={(el) => {
+          cardRef.current = el;
+          if (el && tiltRef.current !== el) {
+            (tiltRef as React.MutableRefObject<HTMLDivElement | null>).current =
+              el;
+          }
+        }}
+        className="group relative bg-gray-50 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {/* Icon Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <svg
+              className="w-6 h-6 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          <div className="flex space-x-2">
             {project.liveUrl && (
               <motion.a
                 whileHover={{ scale: 1.1 }}
@@ -186,9 +381,9 @@ const ProjectsSection = () => {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors duration-200"
+                className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200"
               >
-                <ExternalLink className="w-5 h-5 text-white" />
+                <ExternalLink className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               </motion.a>
             )}
             <motion.a
@@ -197,24 +392,24 @@ const ProjectsSection = () => {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors duration-200"
+              className="p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
             >
-              <Github className="w-5 h-5 text-white" />
+              <Github className="w-4 h-4 text-gray-700 dark:text-gray-300" />
             </motion.a>
           </div>
         </div>
-      </div>
 
-      <div className="p-6">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
-          {project.title}
-        </h3>
+        <div className="flex-grow">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+            {project.title}
+          </h3>
 
-        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
-          {project.description}
-        </p>
+          <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+            {project.description}
+          </p>
+        </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-6">
           {project.technologies.map((tech) => (
             <span
               key={tech}
@@ -224,97 +419,47 @@ const ProjectsSection = () => {
             </span>
           ))}
         </div>
+
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
       </div>
+    );
+  };
 
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 dark:opacity-100 dark:group-hover:opacity-50 transition-opacity duration-300 pointer-events-none"></div>
-    </motion.div>
-  );
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
 
-  const renderApiCard = (project: Project) => (
-    <motion.div
-      key={project.id}
-      variants={cardVariants}
-      whileHover={{ y: -10 }}
-      className="group relative bg-gray-50 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col"
-    >
-      {/* Icon Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-        </div>
-        <div className="flex space-x-2">
-          {project.liveUrl && (
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200"
-            >
-              <ExternalLink className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            </motion.a>
-          )}
-          <motion.a
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
-          >
-            <Github className="w-4 h-4 text-gray-700 dark:text-gray-300" />
-          </motion.a>
-        </div>
-      </div>
-
-      <div className="flex-grow">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
-          {project.title}
-        </h3>
-
-        <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-          {project.description}
-        </p>
-      </div>
-
-      <div className="flex flex-wrap gap-2 mt-6">
-        {project.technologies.map((tech) => (
-          <span
-            key={tech}
-            className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-medium rounded-full"
-          >
-            {tech}
-          </span>
-        ))}
-      </div>
-
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-    </motion.div>
-  );
+  useGSAP(() => {
+    // Section header animation
+    if (headerRef.current) {
+      gsap.fromTo(
+        headerRef.current,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+  }, []);
 
   return (
-    <section id="projects" className="py-20 bg-white dark:bg-gray-900">
+    <section
+      ref={sectionRef}
+      id="projects"
+      className="py-20 bg-white dark:bg-gray-900"
+    >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="text-center mb-16"
-        >
+        <div ref={headerRef} className="text-center mb-16">
           <motion.h2
             variants={itemVariants}
             className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 px-4"
@@ -334,13 +479,10 @@ const ProjectsSection = () => {
               />
             </span>
           </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
-          >
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
             {t("projects.description")}
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         <motion.div
           variants={itemVariants}
@@ -359,7 +501,9 @@ const ProjectsSection = () => {
             viewport={{ once: true, amount: 0.1 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {webProjects.map((project) => renderProjectCard(project))}
+            {webProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
           </motion.div>
         </motion.div>
 
@@ -381,7 +525,9 @@ const ProjectsSection = () => {
               viewport={{ once: true, amount: 0.1 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {apiProjects.map((project) => renderApiCard(project))}
+              {apiProjects.map((project) => (
+                <ApiCard key={project.id} project={project} />
+              ))}
             </motion.div>
           </motion.div>
         )}

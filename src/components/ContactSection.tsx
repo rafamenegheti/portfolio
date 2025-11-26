@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import AnimatedButton from "@/components/AnimatedButton";
 import TextReveal from "@/components/TextReveal";
@@ -9,6 +9,13 @@ import { Mail, Phone, MapPin, Send, Github, Linkedin } from "lucide-react";
 import { ContactForm } from "@/types/portfolio";
 import { useToastContext } from "@/contexts/ToastContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@/hooks/useGSAP";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const ContactSection = () => {
   const { addToast } = useToastContext();
@@ -20,6 +27,60 @@ const ContactSection = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const contactInfoRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (formRef.current) {
+      const inputs = formRef.current.querySelectorAll("input, textarea");
+      gsap.fromTo(
+        inputs,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: formRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    if (contactInfoRef.current) {
+      const cards =
+        contactInfoRef.current.querySelectorAll(".contact-info-card");
+      gsap.fromTo(
+        cards,
+        {
+          opacity: 0,
+          x: -50,
+          scale: 0.9,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          scale: 1,
+          duration: 0.7,
+          stagger: 0.15,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: contactInfoRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -100,7 +161,11 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-800">
+    <section
+      ref={sectionRef}
+      id="contact"
+      className="py-20 bg-gray-50 dark:bg-gray-800"
+    >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <motion.div
           variants={containerVariants}
@@ -152,7 +217,11 @@ const ContactSection = () => {
                   {t("contact.sendMessage")}
                 </motion.h3>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form
+                  ref={formRef}
+                  onSubmit={handleSubmit}
+                  className="space-y-6"
+                >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <motion.div variants={itemVariants}>
                       <label
@@ -270,15 +339,14 @@ const ContactSection = () => {
               {t("contact.letsConnect")}
             </motion.h3>
 
-            <div className="space-y-6">
+            <div ref={contactInfoRef} className="space-y-6">
               {contactInfo.map((info) => (
-                <motion.a
+                <a
                   key={info.label}
-                  variants={itemVariants}
                   href={info.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-4 p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
+                  className="contact-info-card flex items-center space-x-4 p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
                 >
                   <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors duration-200">
                     <info.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -291,7 +359,7 @@ const ContactSection = () => {
                       {info.value}
                     </p>
                   </div>
-                </motion.a>
+                </a>
               ))}
             </div>
 

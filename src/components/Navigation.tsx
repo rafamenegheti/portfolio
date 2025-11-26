@@ -1,10 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Menu, X, Moon, Sun, Languages } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@/hooks/useGSAP";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const Navigation = () => {
   const { theme, toggleTheme } = useTheme();
@@ -34,18 +41,61 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const navRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    // Nav bar entrance animation
+    if (navRef.current) {
+      gsap.fromTo(
+        navRef.current,
+        {
+          y: -100,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+        }
+      );
+
+      // Nav items stagger animation
+      const navItems = navRef.current.querySelectorAll(".nav-item");
+      gsap.fromTo(
+        navItems,
+        {
+          opacity: 0,
+          y: -20,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          delay: 0.3,
+          ease: "power2.out",
+        }
+      );
+    }
+  }, []);
+
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      const targetY = element.getBoundingClientRect().top + window.scrollY;
+      // Use native smooth scroll as GSAP ScrollToPlugin is premium
+      window.scrollTo({
+        top: targetY,
+        behavior: "smooth",
+      });
     }
     setIsMobileMenuOpen(false);
   };
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
+    <nav
+      ref={navRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg"
@@ -67,18 +117,15 @@ const Navigation = () => {
 
           <div className="hidden md:flex md:flex-1 md:justify-center">
             <div className="flex items-baseline space-x-8">
-              {navItems.map((item, index) => (
-                <motion.button
+              {navItems.map((item) => (
+                <button
                   key={item.label}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
                   onClick={() => scrollToSection(item.href)}
-                  className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative group"
+                  className="nav-item text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative group"
                 >
                   {item.label}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
-                </motion.button>
+                </button>
               ))}
             </div>
           </div>
@@ -165,7 +212,7 @@ const Navigation = () => {
           </div>
         </motion.div>
       </div>
-    </motion.nav>
+    </nav>
   );
 };
 

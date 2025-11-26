@@ -1,10 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import InteractiveCard from "@/components/InteractiveCard";
 import TextReveal from "@/components/TextReveal";
+import AnimatedCounter from "@/components/AnimatedCounter";
 import { useLanguage } from "@/contexts/LanguageContext";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@/hooks/useGSAP";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 // Technology-specific icons from react-icons
 import {
   SiJavascript,
@@ -27,6 +35,63 @@ import { Zap, FileText } from "lucide-react";
 
 const AboutSection = () => {
   const { t } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
+  const skillsRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // Skills stagger animation
+    if (skillsRef.current) {
+      const skillCards = skillsRef.current.querySelectorAll(".skill-card");
+      gsap.fromTo(
+        skillCards,
+        {
+          opacity: 0,
+          scale: 0.8,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: skillsRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Stats cards animation
+    if (statsRef.current) {
+      const cards = statsRef.current.querySelectorAll("div");
+      gsap.fromTo(
+        cards,
+        {
+          opacity: 0,
+          y: 30,
+          scale: 0.9,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.2,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: statsRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+  }, []);
 
   const skills = [
     { name: "JavaScript", icon: SiJavascript, category: "language" },
@@ -71,20 +136,12 @@ const AboutSection = () => {
     },
   };
 
-  const skillVariants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-      },
-    },
-  };
-
   return (
-    <section id="about" className="py-20 bg-gray-50 dark:bg-gray-800">
+    <section
+      ref={sectionRef}
+      id="about"
+      className="py-20 bg-gray-50 dark:bg-gray-800"
+    >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <motion.div
           variants={containerVariants}
@@ -142,27 +199,24 @@ const AboutSection = () => {
               {t("about.journeyText")}
             </motion.p>
 
-            <motion.div
-              variants={itemVariants}
-              className="grid grid-cols-2 gap-4 pt-6"
-            >
-              <div className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-md">
+            <div ref={statsRef} className="grid grid-cols-2 gap-4 pt-6">
+              <div className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
                 <h4 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                  10+
+                  <AnimatedCounter value={10} suffix="+" />
                 </h4>
                 <p className="text-gray-600 dark:text-gray-400">
                   {t("about.projectsCompleted")}
                 </p>
               </div>
-              <div className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-md">
+              <div className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
                 <h4 className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                  4+
+                  <AnimatedCounter value={4} suffix="+" />
                 </h4>
                 <p className="text-gray-600 dark:text-gray-400">
                   {t("about.yearsExperience")}
                 </p>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
 
           <motion.div
@@ -178,13 +232,12 @@ const AboutSection = () => {
               {t("about.skillsTitle")}
             </motion.h3>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {skills.map((skill, index) => (
-                <motion.div
-                  key={skill.name}
-                  variants={skillVariants}
-                  custom={index}
-                >
+            <div
+              ref={skillsRef}
+              className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+            >
+              {skills.map((skill) => (
+                <div key={skill.name} className="skill-card">
                   <InteractiveCard className="h-full" glowColor="blue">
                     <div className="p-4">
                       <div className="flex flex-col items-center text-center space-y-2">
@@ -195,7 +248,7 @@ const AboutSection = () => {
                       </div>
                     </div>
                   </InteractiveCard>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>
