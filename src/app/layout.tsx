@@ -1,28 +1,27 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ToastProvider } from "@/contexts/ToastContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import MagneticCursor from "@/components/MagneticCursor";
-import FloatingParticles from "@/components/FloatingParticles";
+import Atmosphere from "@/components/Atmosphere";
 import ScrollProgress from "@/components/ScrollProgress";
-import PageLoader from "@/components/PageLoader";
-import AnimatedBackground from "@/components/AnimatedBackground";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio - Rafael Menegheti",
+  title: "Rafael Menegheti — Full Stack Developer",
   description:
     "Personal portfolio showcasing full-stack development projects and skills.",
 };
@@ -33,16 +32,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark')
+                localStorage.removeItem('theme');
+                const theme = localStorage.getItem('portfolio-theme');
+                if (theme === 'light') {
+                  document.documentElement.classList.remove('dark');
                 } else {
-                  document.documentElement.classList.remove('dark')
+                  document.documentElement.classList.add('dark');
+                  if (!theme) localStorage.setItem('portfolio-theme', 'dark');
                 }
               } catch (_) {}
             `,
@@ -62,15 +64,12 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${jetbrains.variable} antialiased`}
       >
         <ThemeProvider>
           <LanguageProvider>
             <ToastProvider>
-              <PageLoader />
-              <AnimatedBackground />
-              <MagneticCursor />
-              <FloatingParticles />
+              <Atmosphere />
               <ScrollProgress />
               {children}
             </ToastProvider>

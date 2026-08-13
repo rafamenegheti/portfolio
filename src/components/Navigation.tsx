@@ -1,218 +1,179 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Menu, X, Moon, Sun, Languages } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, CloudRain, Sun } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@/hooks/useGSAP";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const Navigation = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, mounted: themeMounted } = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const navItems = [
-    { label: t("nav.home"), href: "#home" },
-    { label: t("nav.about"), href: "#about" },
-    { label: t("nav.experience"), href: "#experience" },
-    { label: t("nav.projects"), href: "#projects" },
-    { label: t("nav.contact"), href: "#contact" },
+    { label: t("nav.home"), href: "#home", id: "home" },
+    { label: t("nav.about"), href: "#about", id: "about" },
+    { label: t("nav.experience"), href: "#experience", id: "experience" },
+    { label: t("nav.projects"), href: "#projects", id: "projects" },
+    { label: t("nav.contact"), href: "#contact", id: "contact" },
   ];
 
   useEffect(() => {
+    const sectionIds = ["home", "about", "experience", "projects", "contact"];
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 40);
+
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el && el.getBoundingClientRect().top <= 120) {
+          setActiveSection(sectionIds[i]);
+          break;
+        }
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const navRef = useRef<HTMLElement>(null);
-
-  useGSAP(() => {
-    // Nav bar entrance animation
-    if (navRef.current) {
-      gsap.fromTo(
-        navRef.current,
-        {
-          y: -100,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-        }
-      );
-
-      // Nav items stagger animation
-      const navItems = navRef.current.querySelectorAll(".nav-item");
-      gsap.fromTo(
-        navItems,
-        {
-          opacity: 0,
-          y: -20,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          delay: 0.3,
-          ease: "power2.out",
-        }
-      );
-    }
   }, []);
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
       const targetY = element.getBoundingClientRect().top + window.scrollY;
-      // Use native smooth scroll as GSAP ScrollToPlugin is premium
-      window.scrollTo({
-        top: targetY,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: targetY, behavior: "smooth" });
     }
     setIsMobileMenuOpen(false);
   };
 
   return (
-    <nav
-      ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
+    <motion.nav
+      initial={{ y: -16, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
+        isScrolled ? "nav-scrolled" : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:justify-start">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex-shrink-0"
+      <div className="container-page">
+        <div className="flex h-16 items-center justify-between md:h-20">
+          <button
+            onClick={() => scrollToSection("#home")}
+            className="font-display text-lg font-bold tracking-tight text-glow"
           >
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent opacity-0">
-              Rafael
-            </h1>
-          </motion.div>
+            rafael.
+          </button>
 
-          <div className="hidden md:flex md:flex-1 md:justify-center">
-            <div className="flex items-baseline space-x-8">
-              {navItems.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => scrollToSection(item.href)}
-                  className="nav-item text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative group"
-                >
-                  {item.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4 md:flex-shrink-0">
-            {mounted ? (
-              <>
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 }}
-                  onClick={toggleLanguage}
-                  className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
-                  aria-label="Toggle language"
-                  title={`Current language: ${language}. Click to toggle.`}
-                >
-                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    {language === "en" ? "EN" : "PT"}
-                  </span>
-                  <div className="w-px h-4 bg-gray-400 dark:bg-gray-500"></div>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {language === "en" ? "PT" : "EN"}
-                  </span>
-                </motion.button>
-
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.4 }}
-                  onClick={toggleTheme}
-                  className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
-                  aria-label="Toggle theme"
-                  title={`Current theme: ${theme}. Click to toggle.`}
-                >
-                  {theme === "dark" ? (
-                    <Sun className="w-5 h-5 text-yellow-500" />
-                  ) : (
-                    <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                  )}
-                </motion.button>
-              </>
-            ) : (
-              <>
-                <div className="p-2 rounded-lg bg-gray-200 w-10 h-10 animate-pulse"></div>
-                <div className="p-2 rounded-lg bg-gray-200 w-10 h-10 animate-pulse"></div>
-              </>
-            )}
-
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
-                aria-label="Open menu"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="w-5 h-5" />
-                ) : (
-                  <Menu className="w-5 h-5" />
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{
-            opacity: isMobileMenuOpen ? 1 : 0,
-            height: isMobileMenuOpen ? "auto" : 0,
-          }}
-          transition={{ duration: 0.3 }}
-          className="md:hidden overflow-hidden"
-        >
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-lg mt-2">
+          <div className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
               <button
-                key={item.label}
+                key={item.id}
                 onClick={() => scrollToSection(item.href)}
-                className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors duration-200"
+                className={`relative px-3 py-2 font-mono text-xs transition-colors duration-300 ${
+                  activeSection === item.id
+                    ? "text-fg"
+                    : "text-muted hover:opacity-80"
+                }`}
               >
                 {item.label}
+                {activeSection === item.id && (
+                  <motion.span
+                    layoutId="nav-indicator"
+                    className="absolute bottom-0 left-3 right-3 h-px bg-[var(--foreground)] opacity-70"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
               </button>
             ))}
           </div>
-        </motion.div>
+
+          <div className="flex items-center gap-1 sm:gap-2">
+            {mounted && themeMounted ? (
+              <>
+                <button
+                  onClick={toggleLanguage}
+                  className="px-2 py-1 font-mono text-xs text-muted transition-colors hover:text-fg"
+                  aria-label="Toggle language"
+                >
+                  {language === "en" ? "EN" : "PT"}
+                  <span className="mx-1 opacity-30">/</span>
+                  <span className="opacity-40">
+                    {language === "en" ? "PT" : "EN"}
+                  </span>
+                </button>
+
+                <button
+                  onClick={toggleTheme}
+                  className="rounded-xl p-2 text-muted transition-colors hover:bg-[var(--surface)] hover:text-fg"
+                  aria-label={
+                    theme === "dark"
+                      ? "Switch to sunny day"
+                      : "Switch to rainy night"
+                  }
+                  title={theme === "dark" ? "Sunny day" : "Rainy night"}
+                >
+                  {theme === "dark" ? (
+                    <Sun className="h-4 w-4" />
+                  ) : (
+                    <CloudRain className="h-4 w-4" />
+                  )}
+                </button>
+              </>
+            ) : (
+              <div className="h-8 w-16 animate-pulse rounded bg-[var(--surface)]" />
+            )}
+
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-muted md:hidden"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+        </div>
       </div>
-    </nav>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden border-t border-[var(--border)] bg-[var(--nav-bg)] backdrop-blur-xl md:hidden"
+          >
+            <div className="container-page space-y-1 py-4">
+              {navItems.map((item, i) => (
+                <motion.button
+                  key={item.id}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  onClick={() => scrollToSection(item.href)}
+                  className={`block w-full py-3 text-left font-mono text-sm ${
+                    activeSection === item.id ? "text-fg" : "text-muted"
+                  }`}
+                >
+                  {item.label}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 };
 

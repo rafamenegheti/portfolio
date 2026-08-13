@@ -1,17 +1,9 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion } from "framer-motion";
-import TextReveal from "@/components/TextReveal";
-import { Calendar, MapPin, Briefcase } from "lucide-react";
+import React from "react";
+import { Calendar, MapPin } from "lucide-react";
+import Reveal from "@/components/Reveal";
 import { useLanguage } from "@/contexts/LanguageContext";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@/hooks/useGSAP";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface Experience {
   id: string;
@@ -20,92 +12,12 @@ interface Experience {
   location: string;
   startDate: string;
   endDate: string;
-  description: string;
   technologies: string[];
   achievements: string[];
 }
 
 const ExperienceSection = () => {
   const { t, tArray } = useLanguage();
-  const sectionRef = useRef<HTMLElement>(null);
-  const timelineRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    // Timeline animation for experience cards
-    if (timelineRef.current) {
-      const cards = timelineRef.current.querySelectorAll(".experience-card");
-
-      cards.forEach((card, index) => {
-        gsap.fromTo(
-          card,
-          {
-            opacity: 0,
-            x: index % 2 === 0 ? -100 : 100,
-            scale: 0.9,
-          },
-          {
-            opacity: 1,
-            x: 0,
-            scale: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-
-        // Timeline dot animation
-        const dot = card.querySelector(".timeline-dot");
-        if (dot) {
-          gsap.fromTo(
-            dot,
-            {
-              scale: 0,
-              rotation: -180,
-            },
-            {
-              scale: 1,
-              rotation: 0,
-              duration: 0.6,
-              ease: "back.out(1.7)",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 85%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
-
-        // Technologies stagger animation
-        const techTags = card.querySelectorAll(".tech-tag");
-        if (techTags.length > 0) {
-          gsap.fromTo(
-            techTags,
-            {
-              opacity: 0,
-              scale: 0.8,
-            },
-            {
-              opacity: 1,
-              scale: 1,
-              duration: 0.4,
-              stagger: 0.05,
-              ease: "back.out(1.7)",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 70%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
-      });
-    }
-  }, []);
 
   const experiences: Experience[] = [
     {
@@ -115,7 +27,6 @@ const ExperienceSection = () => {
       location: t("experience.remote"),
       startDate: "Jan 2023",
       endDate: t("experience.present"),
-      description: "",
       technologies: [
         "Next.js",
         "React",
@@ -140,7 +51,6 @@ const ExperienceSection = () => {
       location: t("experience.remote"),
       startDate: "Mar 2021",
       endDate: "Jan 2024",
-      description: "",
       technologies: [
         "React",
         "Next.js",
@@ -165,163 +75,73 @@ const ExperienceSection = () => {
       location: "Franca, SP",
       startDate: "Jun 2020",
       endDate: "Dec 2021",
-      description: "",
       technologies: ["MySQL", "Oracle"],
       achievements: tArray("experience.job3.achievements"),
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-      },
-    },
-  };
-
   return (
-    <section
-      ref={sectionRef}
-      id="experience"
-      className="py-20 bg-white dark:bg-gray-900"
-    >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="text-center mb-16"
-        >
-          <motion.h2
-            variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 px-4"
-          >
-            <span
-              className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block"
-              style={{
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              <TextReveal
-                key={t("experience.title")}
-                text={t("experience.title")}
-                type="word"
-                delay={0.2}
-              />
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
-          >
+    <section id="experience" className="section-pad relative z-10">
+      <div className="container-page">
+        <Reveal>
+          <p className="section-label">02 / experience/</p>
+          <h2 className="heading-display mb-3 text-3xl text-glow sm:text-4xl md:text-5xl">
+            {t("experience.title")}
+          </h2>
+          <p className="mb-12 max-w-2xl font-mono text-sm text-muted">
             {t("experience.description")}
-          </motion.p>
-        </motion.div>
+          </p>
+        </Reveal>
 
-        <div ref={timelineRef} className="space-y-8">
+        <div className="space-y-5">
           {experiences.map((experience, index) => (
-            <div key={experience.id} className="experience-card relative">
-              <div className="flex flex-col md:flex-row gap-6">
-                {/* Timeline dot */}
-                <div className="flex-shrink-0 relative">
-                  {/* Timeline line */}
-                  {index !== experiences.length - 1 && (
-                    <div
-                      className="absolute left-1/2 top-12 w-0.5 bg-gradient-to-b from-blue-600 to-purple-600 transform -translate-x-1/2 z-0 hidden md:block"
-                      style={{ height: "calc(100% + 2rem)" }}
-                    ></div>
-                  )}
-                  <div className="timeline-dot w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-lg relative z-10">
-                    <Briefcase className="w-6 h-6 text-white" />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4">
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                        {experience.position}
-                      </h3>
-                      <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">
-                        {experience.company}
-                      </h4>
-                    </div>
-
-                    <div className="flex flex-col lg:items-end space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="w-4 h-4" />
-                        <span>
-                          {experience.startDate} - {experience.endDate}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <MapPin className="w-4 h-4" />
-                        <span>{experience.location}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {experience.description}
-                  </p> */}
-
-                  {/* Achievements */}
-                  <div className="mb-6">
-                    {/* <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                      Key Achievements
-                    </h5> */}
-                    <ul className="space-y-2">
-                      {experience.achievements.map(
-                        (achievement, achievementIndex) => (
-                          <li
-                            key={achievementIndex}
-                            className="flex items-start space-x-3 text-gray-700 dark:text-gray-300"
-                          >
-                            <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                            <span>{achievement}</span>
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </div>
-
-                  {/* Technologies */}
+            <Reveal key={experience.id} delay={index * 0.08}>
+              <article className="glass-panel p-6 sm:p-8">
+                <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                      {t("experience.technologiesUsed")}
-                    </h5>
-                    <div className="flex flex-wrap gap-2">
-                      {experience.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="tech-tag px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+                    <p className="mb-1 font-mono text-xs text-muted">
+                      {experience.company}
+                    </p>
+                    <h3 className="heading-display text-xl sm:text-2xl">
+                      {experience.position}
+                    </h3>
+                  </div>
+                  <div className="flex flex-col gap-1 font-mono text-xs text-muted sm:items-end">
+                    <span className="inline-flex items-center gap-2">
+                      <Calendar className="h-3 w-3" />
+                      {experience.startDate} — {experience.endDate}
+                    </span>
+                    <span className="inline-flex items-center gap-2">
+                      <MapPin className="h-3 w-3" />
+                      {experience.location}
+                    </span>
                   </div>
                 </div>
-              </div>
-            </div>
+
+                <ul className="mb-6 space-y-2.5">
+                  {experience.achievements.map((achievement, i) => (
+                    <li
+                      key={i}
+                      className="flex gap-3 font-mono text-sm leading-relaxed text-muted"
+                    >
+                      <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-[var(--accent)]" />
+                      <span>{achievement}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="mb-3 font-mono text-[11px] uppercase tracking-wider text-muted opacity-70">
+                  {t("experience.technologiesUsed")}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {experience.technologies.map((tech) => (
+                    <span key={tech} className="tag">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>

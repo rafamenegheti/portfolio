@@ -38,7 +38,7 @@ const Toast: React.FC<ToastProps> = ({
     success: "from-green-500 to-emerald-600",
     error: "from-red-500 to-rose-600",
     warning: "from-yellow-500 to-orange-600",
-    info: "from-blue-500 to-indigo-600",
+    info: "from-teal-500 to-accent",
   };
 
   const bgColors = {
@@ -47,14 +47,14 @@ const Toast: React.FC<ToastProps> = ({
     error: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800",
     warning:
       "bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800",
-    info: "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800",
+    info: "bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800",
   };
 
   const textColors = {
     success: "text-green-800 dark:text-green-200",
     error: "text-red-800 dark:text-red-200",
     warning: "text-yellow-800 dark:text-yellow-200",
-    info: "text-blue-800 dark:text-blue-200",
+    info: "text-teal-800 dark:text-teal-200",
   };
 
   const Icon = icons[type];

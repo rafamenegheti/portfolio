@@ -6,43 +6,30 @@ import AboutSection from "@/components/AboutSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ContactSection from "@/components/ContactSection";
-import SectionTransition from "@/components/SectionTransition";
-import GSAPTextSplit from "@/components/GSAPTextSplit";
+import Reveal from "@/components/Reveal";
 
 export default function Home() {
   return (
-    <div className="page-content min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div className="relative z-10 min-h-screen text-fg">
       <Navigation />
       <main>
         <HeroSection />
-
         <AboutSection />
-
-        <SectionTransition effect="fade">
-          <ExperienceSection />
-        </SectionTransition>
-
-        <SectionTransition effect="slide" direction="up">
-          <ProjectsSection />
-        </SectionTransition>
-
-        <SectionTransition effect="fade">
-          <ContactSection />
-        </SectionTransition>
+        <ExperienceSection />
+        <ProjectsSection />
+        <ContactSection />
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 dark:bg-black text-white py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <GSAPTextSplit
-              text="2025 Rafael Menegheti. Built with Next.js, TypeScript, Tailwind CSS and ❤."
-              type="words"
-              animation="fade"
-              delay={0}
-              className="text-gray-400"
-            />
-          </div>
+      <footer className="relative z-10 border-t border-[var(--border)] py-10">
+        <div className="container-page">
+          <Reveal>
+            <div className="flex flex-col items-center justify-between gap-4 font-mono text-xs text-muted sm:flex-row">
+              <p className="font-display text-base text-fg text-glow">
+                rafael.
+              </p>
+              <p>© 2025 · built with next.js & a little coffee</p>
+            </div>
+          </Reveal>
         </div>
       </footer>
     </div>

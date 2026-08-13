@@ -1,12 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { useEffect, useRef, useState } from "react";
 
 interface AnimatedCounterProps {
   value: number;
@@ -20,37 +14,43 @@ const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
   value,
   suffix = "",
   prefix = "",
-  duration = 2,
+  duration = 1.6,
   className = "",
 }) => {
-  const counterRef = useRef<HTMLSpanElement>(null);
+  const [display, setDisplay] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    const counter = counterRef.current;
-    if (!counter) return;
+    const el = ref.current;
+    if (!el) return;
 
-    const obj = { count: 0 };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || hasAnimated.current) return;
+        hasAnimated.current = true;
 
-    gsap.to(obj, {
-      count: value,
-      duration,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: counter,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
+        const start = performance.now();
+        const animate = (now: number) => {
+          const progress = Math.min((now - start) / (duration * 1000), 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setDisplay(Math.round(eased * value));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
       },
-      onUpdate: () => {
-        if (counter) {
-          counter.textContent = prefix + Math.round(obj.count) + suffix;
-        }
-      },
-    });
-  }, [value, suffix, prefix, duration]);
+      { threshold: 0.4 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [value, duration]);
 
   return (
-    <span ref={counterRef} className={className}>
-      {prefix}0{suffix}
+    <span ref={ref} className={className}>
+      {prefix}
+      {display}
+      {suffix}
     </span>
   );
 };

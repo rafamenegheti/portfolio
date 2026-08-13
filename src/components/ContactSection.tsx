@@ -1,21 +1,12 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { motion } from "framer-motion";
-import AnimatedButton from "@/components/AnimatedButton";
-import TextReveal from "@/components/TextReveal";
-import InteractiveCard from "@/components/InteractiveCard";
+import React, { useState } from "react";
 import { Mail, Phone, MapPin, Send, Github, Linkedin } from "lucide-react";
 import { ContactForm } from "@/types/portfolio";
 import { useToastContext } from "@/contexts/ToastContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@/hooks/useGSAP";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import Reveal from "@/components/Reveal";
+import AnimatedButton from "@/components/AnimatedButton";
 
 const ContactSection = () => {
   const { addToast } = useToastContext();
@@ -27,83 +18,23 @@ const ContactSection = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
-  const contactInfoRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    if (formRef.current) {
-      const inputs = formRef.current.querySelectorAll("input, textarea");
-      gsap.fromTo(
-        inputs,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: formRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    }
-
-    if (contactInfoRef.current) {
-      const cards =
-        contactInfoRef.current.querySelectorAll(".contact-info-card");
-      gsap.fromTo(
-        cards,
-        {
-          opacity: 0,
-          x: -50,
-          scale: 0.9,
-        },
-        {
-          opacity: 1,
-          x: 0,
-          scale: 1,
-          duration: 0.7,
-          stagger: 0.15,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: contactInfoRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    }
-  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     addToast({
       message: t("toast.contactInDev"),
       type: "info",
       duration: 6000,
     });
-
     await new Promise((resolve) => setTimeout(resolve, 2000));
-
     setIsSubmitting(false);
   };
 
@@ -137,96 +68,30 @@ const ContactSection = () => {
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-      },
-    },
-  };
-
   return (
-    <section
-      ref={sectionRef}
-      id="contact"
-      className="py-20 bg-gray-50 dark:bg-gray-800"
-    >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="text-center mb-16"
-        >
-          <motion.h2
-            variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 px-4"
-          >
-            <span
-              className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block"
-              style={{
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              <TextReveal
-                key={t("contact.title")}
-                text={t("contact.title")}
-                type="word"
-                delay={0.2}
-              />
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
-          >
-            {t("contact.description")}
-          </motion.p>
-        </motion.div>
+    <section id="contact" className="section-pad relative z-10">
+      <div className="container-page">
+        <Reveal>
+          <div className="glass-panel p-6 sm:p-10 md:p-12">
+            <p className="section-label">04 / contact/</p>
+            <h2 className="heading-display mb-3 text-3xl text-glow sm:text-4xl md:text-5xl">
+              {t("contact.title")}
+            </h2>
+            <p className="mb-10 max-w-2xl font-mono text-sm text-muted">
+              {t("contact.description")}
+            </p>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            <InteractiveCard glowColor="blue">
-              <div className="p-8">
-                <motion.h3
-                  variants={itemVariants}
-                  className="text-2xl font-semibold text-gray-900 dark:text-white mb-6"
-                >
+            <div className="grid gap-12 lg:grid-cols-2">
+              <div>
+                <h3 className="mb-6 font-mono text-sm text-fg">
                   {t("contact.sendMessage")}
-                </motion.h3>
-
-                <form
-                  ref={formRef}
-                  onSubmit={handleSubmit}
-                  className="space-y-6"
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <motion.div variants={itemVariants}>
+                </h3>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
                       <label
                         htmlFor="name"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        className="mb-2 block font-mono text-[11px] uppercase tracking-wider text-muted"
                       >
                         {t("contact.name")}
                       </label>
@@ -237,15 +102,14 @@ const ContactSection = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                        className="input-field"
                         placeholder={t("contact.namePlaceholder")}
                       />
-                    </motion.div>
-
-                    <motion.div variants={itemVariants}>
+                    </div>
+                    <div>
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        className="mb-2 block font-mono text-[11px] uppercase tracking-wider text-muted"
                       >
                         {t("contact.email")}
                       </label>
@@ -256,16 +120,16 @@ const ContactSection = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                        className="input-field"
                         placeholder={t("contact.emailPlaceholder")}
                       />
-                    </motion.div>
+                    </div>
                   </div>
 
-                  <motion.div variants={itemVariants}>
+                  <div>
                     <label
                       htmlFor="subject"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                      className="mb-2 block font-mono text-[11px] uppercase tracking-wider text-muted"
                     >
                       {t("contact.subject")}
                     </label>
@@ -276,15 +140,15 @@ const ContactSection = () => {
                       value={formData.subject}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                      className="input-field"
                       placeholder={t("contact.subjectPlaceholder")}
                     />
-                  </motion.div>
+                  </div>
 
-                  <motion.div variants={itemVariants}>
+                  <div>
                     <label
                       htmlFor="message"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                      className="mb-2 block font-mono text-[11px] uppercase tracking-wider text-muted"
                     >
                       {t("contact.message")}
                     </label>
@@ -294,97 +158,88 @@ const ContactSection = () => {
                       value={formData.message}
                       onChange={handleInputChange}
                       required
-                      rows={6}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 resize-none"
+                      rows={5}
+                      className="input-field resize-none"
                       placeholder={t("contact.messagePlaceholder")}
                     />
-                  </motion.div>
+                  </div>
 
-                  <motion.div variants={itemVariants}>
-                    <AnimatedButton
-                      type="submit"
-                      disabled={isSubmitting}
-                      variant="primary"
-                      size="lg"
-                      className="w-full"
-                      icon={
-                        isSubmitting ? (
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        ) : (
-                          <Send className="w-5 h-5" />
-                        )
-                      }
-                    >
-                      {isSubmitting
-                        ? t("contact.sending")
-                        : t("contact.sendButton")}
-                    </AnimatedButton>
-                  </motion.div>
+                  <AnimatedButton
+                    type="submit"
+                    disabled={isSubmitting}
+                    variant="primary"
+                    size="lg"
+                    icon={
+                      isSubmitting ? (
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                      ) : (
+                        <Send className="h-4 w-4" />
+                      )
+                    }
+                  >
+                    {isSubmitting
+                      ? t("contact.sending")
+                      : `-> ${t("contact.sendButton")}`}
+                  </AnimatedButton>
                 </form>
               </div>
-            </InteractiveCard>
-          </motion.div>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="space-y-8"
-          >
-            <motion.h3
-              variants={itemVariants}
-              className="text-2xl font-semibold text-gray-900 dark:text-white mb-6"
-            >
-              {t("contact.letsConnect")}
-            </motion.h3>
+              <div>
+                <h3 className="mb-6 font-mono text-sm text-fg">
+                  {t("contact.letsConnect")}
+                </h3>
 
-            <div ref={contactInfoRef} className="space-y-6">
-              {contactInfo.map((info) => (
-                <a
-                  key={info.label}
-                  href={info.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-info-card flex items-center space-x-4 p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
-                >
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors duration-200">
-                    <info.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white">
-                      {info.label}
-                    </h4>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {info.value}
-                    </p>
-                  </div>
-                </a>
-              ))}
-            </div>
+                <div className="mb-10 space-y-3">
+                  {contactInfo.map((info) => (
+                    <a
+                      key={info.label}
+                      href={info.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="soft-panel flex items-center gap-4 p-4 transition-colors hover:border-[var(--accent)]"
+                    >
+                      <info.icon className="h-4 w-4 flex-shrink-0 text-muted" />
+                      <div>
+                        <p className="font-mono text-[11px] uppercase tracking-wider text-muted">
+                          {info.label}
+                        </p>
+                        <p className="font-mono text-sm text-fg">{info.value}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
 
-            <motion.div variants={itemVariants} className="pt-8">
-              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                {t("contact.followMe")}
-              </h4>
-              <div className="flex space-x-4">
-                {socialLinks.map((social) => (
-                  <motion.a
-                    key={social.label}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
-                    aria-label={social.label}
+                <p className="mb-3 font-mono text-[11px] uppercase tracking-wider text-muted">
+                  {t("contact.followMe")}
+                </p>
+                <div className="flex gap-3">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--border)] text-muted transition-all hover:border-[var(--accent)] hover:text-fg"
+                      aria-label={social.label}
+                    >
+                      <social.icon className="h-5 w-5" />
+                    </a>
+                  ))}
+                </div>
+
+                <p className="mt-8 font-mono text-sm text-muted">
+                  send me a letter!{" "}
+                  <a
+                    href="mailto:rafaelmenegheti51@gmail.com"
+                    className="link-glow"
                   >
-                    <social.icon className="w-6 h-6" />
-                  </motion.a>
-                ))}
+                    rafaelmenegheti51@gmail.com
+                  </a>
+                </p>
               </div>
-            </motion.div>
-          </motion.div>
-        </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
